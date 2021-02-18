@@ -1,8 +1,8 @@
 import pygame
 import sys
 
-import board
-import colors
+from data import colors
+from widgets import board
 
 pygame.init()
 
