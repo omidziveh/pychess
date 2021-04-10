@@ -14,9 +14,8 @@ class Button:
         self.fg_color = foreground_color  # colors
         self.bg_color = background_color  # colors
         self.border = border  # int
-        self._text = text.Text(screen, string, button_size.center[0], button_size.center[1], button_size.height - 20)
+        self._text = text.Text(screen, string, button_size.center[0], button_size.center[1], button_size.height - 100)
         self.__hovered = False
-        self.__taped = False
         self.__string = string
 
     # draw the button with hover design and text
@@ -35,15 +34,11 @@ class Button:
     def onTap(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.size.rect.collidepoint(event.pos):
-                self.__taped = True
                 self.size.rect = pygame.Rect(self.size.x, self.size.y + 3, self.size.width, self.size.height)
-                print('taped')
-                return True
         if event.type == pygame.MOUSEBUTTONUP:
+            self.size.rect = pygame.Rect(self.size.x, self.size.y, self.size.width, self.size.height)
             if self.size.rect.collidepoint(event.pos):
-                self.__taped = False
-                self.size.rect = pygame.Rect(self.size.x, self.size.y, self.size.width, self.size.height)
-                return False
+                return True
 
     # check is the button hovered or not
     def onHover(self, event):
