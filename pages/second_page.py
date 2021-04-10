@@ -29,8 +29,11 @@ def page(screen):
                 sys.exit()
             # player1_name_textfield.onTap(event)
             player1_name_textfield.typing(event)
+
             if next_button.onTap(event):
-                third_page.page(screen)
+                player1_name = player1_name_texteditingcontroller.text
+                third_page.page(screen, {1: player1_name})
+
             next_button.onHover(event)
 
         player1_name_text.draw()

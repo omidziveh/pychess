@@ -7,12 +7,12 @@ from widgets import textfield
 from widgets import button
 from widgets import text
 from widgets import size
+from pages import forth_page
 
 pygame.init()
 
 
-def page(screen):
-
+def page(screen, users):
     player2_name_text = text.Text(screen, 'Player 2 name:', 300, 250, 30, fg_color=colors.gray_dark)
     player2_name_texteditingcontroller = texteditingcontroller.TextEditingController()
     player2_name_size = size.Size(550, 250, 300, 50)
@@ -27,7 +27,10 @@ def page(screen):
                 sys.exit()
 
             player2_name_textfield.typing(event)
-            next_button.onTap(event)
+            if next_button.onTap(event):
+                player2_name = player2_name_texteditingcontroller.text
+                users[2] = player2_name
+                forth_page.page(screen, users)
             next_button.onHover(event)
 
         player2_name_text.draw()

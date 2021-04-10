@@ -4,7 +4,7 @@ from data import colors
 
 
 class Board:
-    def __init__(self, screen, table_size, side, sqr_size, padding=100, theme=(colors.brown, colors.light_brown), width=2):
+    def __init__(self, screen, table_size, side, sqr_size, padding=100, theme=(colors.gray_dark, colors.gray_light), width=2):
         self.screen = screen  # pygame.display
         self.size = table_size  # Size
         self.side = side  # "colors.white" / "colors.black"
