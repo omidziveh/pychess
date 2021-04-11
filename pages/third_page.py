@@ -8,6 +8,7 @@ from widgets import button
 from widgets import image
 from widgets import text
 from widgets import size
+from widgets import menu
 from pages import forth_page
 from pages import second_page
 

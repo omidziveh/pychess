@@ -14,7 +14,13 @@ class Button:
         self.fg_color = foreground_color  # colors
         self.bg_color = background_color  # colors
         self.border = border  # int
-        self._text = text.Text(screen, string, button_size.center[0], button_size.center[1], button_size.height - 100)
+        
+        self._text = text.Text(
+            screen, string, 
+            button_size.center[0], button_size.center[1], 
+            button_size.height - 100
+        )
+        
         self.__hovered = False
         self.__string = string
 
