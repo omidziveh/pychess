@@ -1,3 +1,4 @@
+from typing import MutableMapping
 import pygame
 import sys
 
@@ -14,7 +15,7 @@ def page(screen, users):
     table = board.Board(screen, table_size, 'w', 45)
     data_table_size = size.Size(700, 300, width=300, height=400)
     data_table = datas.Datas(screen, (100, 100), data_table_size)
-    # my_menu = menu.Menu(screen, [])
+    my_menu = menu.Menu(screen, [])
     
     while True:
         screen.fill(colors.white)
@@ -22,12 +23,15 @@ def page(screen, users):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-            # if not my_menu.enabled:
-                # pass
+            if not my_menu.enabled:
+                pass
+            if data_table.menu_button_tapped(event):
+                my_menu.enabled = True
         
         table.draw()
-        # my_menu.draw()
         data_table.draw()
         
+        if my_menu.enabled:
+            my_menu.draw()
         
         pygame.display.update()
