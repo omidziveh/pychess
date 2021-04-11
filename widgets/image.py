@@ -1,5 +1,4 @@
 import pygame
-import os
 
 pygame.init()
 
@@ -9,6 +8,7 @@ class Image:
         self.screen = screen
         self.path = path
         self.size = size
+        self.y = self.size.y
 
         self.image = pygame.image.load(path)
 
@@ -20,14 +20,9 @@ class Image:
     def onTap(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.size.rect.collidepoint(event.pos):
-                self.size.rect = (self.size.x, 
-                                  self.size.y + 3, 
-                                  self.width, 
-                                  self.height)
+                self.size.y += 3
         if event.type == pygame.MOUSEBUTTONUP:
-            self.size.rect = (self.size.x, 
-                              self.size.y, 
-                              self.size.width, 
-                              self.size.height)
+            self.size.y = self.y
             if self.size.rect.collidepoint(event.pos):
                 return True
+
