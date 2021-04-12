@@ -81,3 +81,9 @@ class Menu:
         
     def onTap_close_button(self, event):
         return self.close_button.onTap(event)
+
+    def tap_outside_menu(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if self.size.rect.collidepoint(event.pos):
+                return False
+            return True

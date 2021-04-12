@@ -17,7 +17,7 @@ def page(screen, users):
     table_size = size.Size(230, 300, 360, 360)
     table = board.Board(screen, table_size, 'w', 45)
     data_table_size = size.Size(700, 300, width=300, height=400)
-    data_table = datas.Datas(screen, (100, 100), data_table_size)
+    data_table = datas.DataTable(screen, (100, 100), data_table_size, 2)
     quit_button_size = size.Size(450, 270, width=250, height=50)
     quit_button = button.Button(screen, quit_button_size, 'QUIT')
     rematch_button_size = size.Size(450, 350, width=250, height=50)

@@ -7,12 +7,13 @@ from widgets import image
 
 pygame.init()
 
-class Datas:
-    def __init__(self, screen, cell_size, table_size, 
+class DataTable:
+    def __init__(self, screen, cell_size, table_size, rows,
                  colors={'light': colors.white, 'dark': colors.gray_dark}):
         self.screen = screen
         self.cell_size = cell_size
         self.table_size = table_size
+        self.rows = rows
         self.colors = colors
         self.inside_table_size = size.Size(
             table_size.center[0], 
