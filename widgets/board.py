@@ -1,14 +1,18 @@
 import pygame
 
 from data import colors
+from widgets import image
+from widgets import size
 
 
 class Board:
-    def __init__(self, screen, table_size, side, sqr_size, padding=100, theme=(colors.gray_dark, colors.gray_light), width=2):
+    def __init__(self, screen, table_size, side, sqr_size, board, 
+                 padding=100, theme=(colors.gray_dark, colors.gray_light), width=2):
         self.screen = screen  # pygame.display
         self.size = table_size  # Size
         self.side = side  # "colors.white" / "colors.black"
         self.sqr_size = sqr_size # int
+        self.board = board
         self.theme = theme  # (color dark, color light)
         self.padding = padding  # Integer
         self.width = width  # Integer
@@ -51,20 +55,48 @@ class Board:
     #         new_string.append(split_numbers(piece_list[i]))
     #     return new_string
 
-    def draw_piece(self, point):
-        print(8-int(point[0]))
-        print(ord(point[1]) - 97)
-        piece_rect = pygame.Rect(
-            (ord(point[1]) - 97) * self.sqr_size + self.size.left,
-            (8-int(point[0])) * self.sqr_size + self.size.top,
-            self.sqr_size,
-            self.sqr_size
-        )
-        pygame.draw.rect(
-            self.screen,
-            colors.green,
-            piece_rect
-        )
+    def draw_pieces(self, dict):
+        keys = dict.keys()
+        for key in keys:
+            for value in dict[key]:
+                piece_image = image.Image(
+                    self.screen, 
+                    'assets/pieces/'+key+'.png', 
+                    size.Size(
+                        value[0] * self.sqr_size + self.size.left + 20, 
+                        value[1] * self.sqr_size + self.size.top + 20, 
+                        self.sqr_size, 
+                        self.sqr_size
+                    )
+                )
+                piece_image.draw()
+   
+    def generate_fen(self):
+        pieces = {
+            'Wr': [], 
+            'Wn': [], 
+            'Wb': [], 
+            'Wq': [],
+            'Wk': [], 
+            'Wp': [], 
+            'BR': [], 
+            'BN': [], 
+            'BB': [], 
+            'BQ': [], 
+            'BK': [], 
+            'BP': []
+        }
+        fen = self.board.fen().split()[0].split('/')
+        for i in range(len(fen)):
+            number = 0
+            for j in range(len(fen[i])):
+                if fen[i][j].isdigit():
+                    number += 1
+                if fen[i][j] in ['r', 'n', 'b', 'q', 'k', 'p']:
+                    pieces['W'+fen[i][j]].append([j+number, i])
+                if fen[i][j] in ['R', 'N', 'B', 'Q', 'K', 'P']:
+                    pieces['B'+fen[i][j]].append([j+number, i])
+        return pieces
 
 
     @property

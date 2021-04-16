@@ -4,17 +4,19 @@ import pygame
 from data import colors
 from widgets import size
 from widgets import image
+from widgets import text
 
 pygame.init()
 
 class DataTable:
-    def __init__(self, screen, cell_size, table_size, rows,
-                 colors={'light': colors.white, 'dark': colors.gray_dark}):
+    def __init__(self, screen, cell_size, table_size,
+                 colors={'light': colors.white, 'dark': colors.gray_dark}, 
+                 data_cells=[]):
         self.screen = screen
         self.cell_size = cell_size
         self.table_size = table_size
-        self.rows = rows
         self.colors = colors
+        self.children = data_cells
         self.inside_table_size = size.Size(
             table_size.center[0], 
             table_size.center[1] + 15, 
@@ -51,3 +53,10 @@ class DataTable:
     def menu_button_tapped(self, event):
         if self.menu_button.onTap(event):
             return True
+        
+    def draw_cell(self, cell):
+        pygame.draw.rect(
+            self.screen, 
+            colors.green,
+            cell.cell_rect
+        )

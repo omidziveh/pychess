@@ -2,7 +2,7 @@ import pygame
 
 
 class Size:
-    def __init__(self, center_x, center_y, width=None, height=None, radius=None):
+    def __init__(self, center_x=None, center_y=None, width=None, height=None, radius=None):
         self.x = center_x - width // 2
         self.y = center_y - height // 2
         self.center = [center_x, center_y]
