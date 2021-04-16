@@ -16,11 +16,11 @@ def page(screen, users):
 
     # ----- Variables -----
     chess_board = chess.Board()
+    moves = list(chess_board.legal_moves)
 
     # ----- Widgets -----
     table_size = size.Size(230, 300, 360, 360)
     table = board.Board(screen, table_size, 'w', 45, chess_board)
-    table.generate_fen()
     table.draw_pieces(table.generate_fen())
     
     data_table_size = size.Size(700, 300, width=300, height=400)

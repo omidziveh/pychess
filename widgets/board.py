@@ -1,8 +1,10 @@
 import pygame
+import os
 
 from data import colors
 from widgets import image
 from widgets import size
+from widgets import piece
 
 
 class Board:
@@ -22,7 +24,7 @@ class Board:
     def draw(self):
         pygame.draw.rect(
             self.screen,
-            self.theme[0],
+            self.theme[1],
             self.rect
         )
 
@@ -30,7 +32,7 @@ class Board:
             for j in range(self.size.top, self.size.bottom, self.sqr_size * 2):
                 pygame.draw.rect(
                     self.screen,
-                    self.theme[1],
+                    self.theme[0],
                     (i, j, self.sqr_size, self.sqr_size)
                 )
 
@@ -38,9 +40,15 @@ class Board:
             for j in range(self.size.top + self.sqr_size, self.size.bottom, self.sqr_size * 2):
                 pygame.draw.rect(
                     self.screen,
-                    self.theme[1],
+                    self.theme[0],
                     (i, j, self.sqr_size, self.sqr_size)
                 )
+    
+    def pos_to_list(self, pos):
+        return [ord(pos[0]) - 97, int(pos[1]) - 1]
+    
+    def list_to_pos(self, lst):
+        return f'{chr(lst[0]+97)}{lst[1]+1}'
 
     def coord(self, pos):
         rect = ((pos[0] - self.size.left) // self.sqr_size, 7 - (pos[1] - self.size.top) // self.sqr_size)
@@ -59,9 +67,9 @@ class Board:
         keys = dict.keys()
         for key in keys:
             for value in dict[key]:
-                piece_image = image.Image(
-                    self.screen, 
-                    'assets/pieces/'+key+'.png', 
+                chess_piece = piece.Piece(
+                    self.screen,
+                    'assets/pieces/'+key+'.png',
                     size.Size(
                         value[0] * self.sqr_size + self.size.left + 20, 
                         value[1] * self.sqr_size + self.size.top + 20, 
@@ -69,7 +77,7 @@ class Board:
                         self.sqr_size
                     )
                 )
-                piece_image.draw()
+                chess_piece.draw()
    
     def generate_fen(self):
         pieces = {
@@ -97,6 +105,9 @@ class Board:
                 if fen[i][j] in ['R', 'N', 'B', 'Q', 'K', 'P']:
                     pieces['B'+fen[i][j]].append([j+number, i])
         return pieces
+
+    def legal_moves(self):
+        pass
 
 
     @property
