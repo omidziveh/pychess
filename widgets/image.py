@@ -4,10 +4,11 @@ pygame.init()
 
 
 class Image:
-    def __init__(self, screen, path, size):
+    def __init__(self, screen, path, size, default_tap=True):
         self.screen = screen
         self.path = path
         self.size = size
+        self.default_tap = default_tap
         self.y = self.size.y
 
         self.image = pygame.image.load(path)
@@ -18,11 +19,15 @@ class Image:
         self.screen.blit(self.image, (self.size.x, self.size.y))
     
     def onTap(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if self.size.rect.collidepoint(event.pos):
-                self.size.y += 3
+        if self.default_tap:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.size.rect.collidepoint(event.pos):
+                    self.size.y += 3
+            if event.type == pygame.MOUSEBUTTONUP:
+                self.size.y = self.y
+                if self.size.rect.collidepoint(event.pos):
+                    return True
         if event.type == pygame.MOUSEBUTTONUP:
-            self.size.y = self.y
             if self.size.rect.collidepoint(event.pos):
                 return True
 

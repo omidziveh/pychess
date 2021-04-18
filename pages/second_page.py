@@ -16,11 +16,11 @@ pygame.init()
 
 def page(screen):
 
-    player1_name_text = text.Text(screen, 'Player 1 name:', 300, 250, 30, fg_color=colors.gray_dark)
+    player1_name_text = text.Text(screen, 'Player 1 name:', 400, 250, 40, fg_color=colors.gray_dark)
     player1_name_texteditingcontroller = texteditingcontroller.TextEditingController()
-    player1_name_size = size.Size(550, 250, 300, 50)
+    player1_name_size = size.Size(700, 250, 350, 60)
     player1_name_textfield = textfield.TextField(screen, player1_name_size, player1_name_texteditingcontroller)
-    next_button_size = size.Size(450, 500, 100, 50)
+    next_button_size = size.Size(600, 500, 100, 50)
     next_button = button.Button(screen, next_button_size, 'next', border=13)
     back_button_size = size.Size(50, 50, width=70, height=70)
     back_button = image.Image(screen, 'assets/back.png', back_button_size)

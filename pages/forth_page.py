@@ -1,6 +1,7 @@
 import pygame
 import sys
 import chess
+from pygame.event import event_name
 
 from data import colors
 from widgets import board
@@ -19,17 +20,16 @@ def page(screen, users):
     moves = list(chess_board.legal_moves)
 
     # ----- Widgets -----
-    table_size = size.Size(230, 300, 360, 360)
-    table = board.Board(screen, table_size, 'w', 45, chess_board)
-    table.draw_pieces(table.generate_fen())
+    table_size = size.Size(300, 300, width=480, height=480)
+    table = board.Board(screen, table_size, 'w', 60, chess_board)
     
-    data_table_size = size.Size(700, 300, width=300, height=400)
+    data_table_size = size.Size(1000, 300, width=350, height=500)
     data_table = datas.DataTable(screen, (100, 50), data_table_size)
     
-    quit_button_size = size.Size(450, 270, width=250, height=50)
+    quit_button_size = size.Size(600, 270, width=250, height=50)
     quit_button = button.Button(screen, quit_button_size, 'QUIT')
     
-    rematch_button_size = size.Size(450, 350, width=250, height=50)
+    rematch_button_size = size.Size(600, 350, width=250, height=50)
     rematch_button = button.Button(screen, rematch_button_size, 'REMATCH')
     
     my_menu = menu.Menu(screen, [quit_button, rematch_button])
@@ -41,12 +41,29 @@ def page(screen, users):
         
         # ---- Event loop ----
         
+        table.dict_to_list(table.generate_fen())
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
             if not my_menu.enabled:
                 if data_table.menu_button_tapped(event):
                     my_menu.enabled = True
+                if event.type == pygame.MOUSEBUTTONUP:
+                    table.onTap_pieces(event.pos)
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_1:
+                        chess_board.push_san('e2e4')
+                    if event.key == pygame.K_2:
+                        chess_board.push_san('d7d5')
+                    if event.key == pygame.K_3:
+                        chess_board.push_san('g1f3')
+                    if event.key == pygame.K_4:
+                        chess_board.push_san('g8f6')
+                    if event.key == pygame.K_5:
+                        chess_board.push_san('e4d5')
+                    if event.key == pygame.K_6:
+                        chess_board.push_san('d8d5')
             if my_menu.enabled:
                 
                 if my_menu.onTap_close_button(event): # close button
@@ -61,8 +78,9 @@ def page(screen, users):
         # ---- Draw ----
         
         table.draw()
-        table.draw_pieces(table.generate_fen())
         data_table.draw()
+        table.draw_pieces()
+        table.draw_legal_moves()
         
         if my_menu.enabled:
             my_menu.draw(event)

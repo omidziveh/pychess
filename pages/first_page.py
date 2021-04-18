@@ -23,10 +23,10 @@ def get_image(path):
 
 def page(screen):
 
-    start_button_size = size.Size(450, 500, width=100, height=50)
+    start_button_size = size.Size(600, 500, width=100, height=50)
     start_button = button.Button(screen, start_button_size, "play", border=13)
 
-    logo_size = size.Size(450, 250, 550, 550)
+    logo_size = size.Size(600, 250, 550, 550)
     logo = image.Image(screen, 'assets\logo.png', logo_size)
     # image = pygame.image.load(os.path.join('pages', 'logo.png'))
     # print(os.path.join('pages', 'logo.png'))

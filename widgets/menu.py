@@ -68,11 +68,11 @@ class Menu:
         return self.buttons[index].onTap(event)
     
     def init_name(self):
-        name_text = text.Text(self.screen, self.name, 375, 190, 45, fg_color=colors.gray_dark)
+        name_text = text.Text(self.screen, self.name, 525, 190, 45, fg_color=colors.gray_dark)
         return name_text
         
     def init_close_button(self):
-        close_button_size = size.Size(570, 190, width=40, height=40)
+        close_button_size = size.Size(720, 190, width=40, height=40)
         close_button = image.Image(self.screen, 'assets/close.png', close_button_size)
         return close_button
         

@@ -1,3 +1,4 @@
+import chess
 import pygame
 import os
 
@@ -9,7 +10,7 @@ from widgets import piece
 
 class Board:
     def __init__(self, screen, table_size, side, sqr_size, board, 
-                 padding=100, theme=(colors.gray_dark, colors.gray_light), width=2):
+                 padding=100, theme=(colors.brown_dark, colors.brown_light), width=2):
         self.screen = screen  # pygame.display
         self.size = table_size  # Size
         self.side = side  # "colors.white" / "colors.black"
@@ -20,6 +21,8 @@ class Board:
         self.width = width  # Integer
         self._rect = pygame.Rect(self.size.x, self.size.y, self.size.width, self.size.height)
         self._pieces = {}
+        self.piece_list = []
+        self.legal_moves_list = []
     
     def draw(self):
         pygame.draw.rect(
@@ -44,11 +47,6 @@ class Board:
                     (i, j, self.sqr_size, self.sqr_size)
                 )
     
-    def pos_to_list(self, pos):
-        return [ord(pos[0]) - 97, int(pos[1]) - 1]
-    
-    def list_to_pos(self, lst):
-        return f'{chr(lst[0]+97)}{lst[1]+1}'
 
     def coord(self, pos):
         rect = ((pos[0] - self.size.left) // self.sqr_size, 7 - (pos[1] - self.size.top) // self.sqr_size)
@@ -63,21 +61,25 @@ class Board:
     #         new_string.append(split_numbers(piece_list[i]))
     #     return new_string
 
-    def draw_pieces(self, dict):
+    def dict_to_list(self, dict):
+        self.piece_list.clear()
         keys = dict.keys()
         for key in keys:
             for value in dict[key]:
-                chess_piece = piece.Piece(
-                    self.screen,
-                    'assets/pieces/'+key+'.png',
-                    size.Size(
-                        value[0] * self.sqr_size + self.size.left + 20, 
-                        value[1] * self.sqr_size + self.size.top + 20, 
+                self.piece_list.append(
+                    piece.Piece(
+                        self.screen,
+                        'assets/pieces/'+key+'.png',
+                        size.Size(
+                            value[0] * self.sqr_size + self.size.left + self.sqr_size // 2, 
+                            value[1] * self.sqr_size + self.size.top + self.sqr_size // 2, 
+                            self.sqr_size, 
+                            self.sqr_size
+                        ), 
                         self.sqr_size, 
-                        self.sqr_size
+                        self.size
                     )
                 )
-                chess_piece.draw()
    
     def generate_fen(self):
         pieces = {
@@ -97,17 +99,30 @@ class Board:
         fen = self.board.fen().split()[0].split('/')
         for i in range(len(fen)):
             number = 0
+            pos = 0
             for j in range(len(fen[i])):
                 if fen[i][j].isdigit():
-                    number += 1
+                    number += int(fen[i][j])
                 if fen[i][j] in ['r', 'n', 'b', 'q', 'k', 'p']:
-                    pieces['W'+fen[i][j]].append([j+number, i])
+                    pieces['W'+fen[i][j]].append([pos+number, i])
+                    pos += 1
                 if fen[i][j] in ['R', 'N', 'B', 'Q', 'K', 'P']:
-                    pieces['B'+fen[i][j]].append([j+number, i])
+                    pieces['B'+fen[i][j]].append([pos+number, i])
+                    pos += 1
         return pieces
 
-    def legal_moves(self):
-        pass
+    def draw_pieces(self):
+        for piece in self.piece_list:
+            piece.draw()
+    
+    def onTap_pieces(self, pos):
+        for piece in self.piece_list:
+            if piece.onTap(pos):
+                self.legal_moves_list = piece.legal_moves(list(self.board.legal_moves))
+                
+    def draw_legal_moves(self):
+        print(self.legal_moves_list)
+        
 
 
     @property

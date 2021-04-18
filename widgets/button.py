@@ -18,7 +18,7 @@ class Button:
         self._text = text.Text(
             screen, string, 
             button_size.center[0], button_size.center[1], 
-            button_size.height - 100
+            18
         )
         
         self.__hovered = False
