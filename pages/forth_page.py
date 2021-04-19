@@ -51,6 +51,7 @@ def page(screen, users):
                     my_menu.enabled = True
                 if event.type == pygame.MOUSEBUTTONUP:
                     table.onTap_pieces(event.pos)
+                    table.tap_move(event.pos)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_1:
                         chess_board.push_san('e2e4')

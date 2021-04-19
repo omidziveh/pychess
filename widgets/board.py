@@ -23,7 +23,8 @@ class Board:
         self._rect = pygame.Rect(self.size.x, self.size.y, self.size.width, self.size.height)
         self._pieces = {}
         self.piece_list = []
-        self.legal_moves_list = []
+        self._legal_moves_list = []
+        self.legal_moves_rect = []
     
     def draw(self):
         pygame.draw.rect(
@@ -47,20 +48,6 @@ class Board:
                     self.theme[0],
                     (i, j, self.sqr_size, self.sqr_size)
                 )
-    
-
-    def coord(self, pos):
-        rect = ((pos[0] - self.size.left) // self.sqr_size, 7 - (pos[1] - self.size.top) // self.sqr_size)
-        return f'{rect[1]+1}{chr(97+rect[0])}'
-
-    # def generate_fen(self, string):
-    #     string = string.split()[0]
-    #     piece_list = string.split('/')
-    #     new_string = []
-    #     print(string)
-    #     for i in range(len(piece_list)):
-    #         new_string.append(split_numbers(piece_list[i]))
-    #     return new_string
 
     def dict_to_list(self, dict):
         self.piece_list.clear()
@@ -130,6 +117,11 @@ class Board:
                 (move_pos[0] + self.sqr_size // 2, move_pos[1] + self.sqr_size // 2), 
                 self.sqr_size // 2 - 5
             )
+    
+    def tap_move(self, pos):
+        for i in range(len(self.legal_moves_rect)):
+            if self.legal_moves_rect[i].collidepoint(pos):
+                self.board.push_san(str(self.legal_moves_list[i]))
         
 
 
@@ -140,6 +132,10 @@ class Board:
     @property
     def pieces(self):
         return self._pieces
+    
+    @property
+    def legal_moves_list(self):
+        return self._legal_moves_list
 
     @rect.setter
     def rect(self, value):
@@ -148,10 +144,18 @@ class Board:
     @pieces.setter
     def pieces(self, value):
         self._pieces = value
-
-
-def convert_fen_piece_to_uri(string):
-    piece_name = ['k', 'q', 'b', 'n', 'r', 'p', 'K', 'Q', 'B', 'N', 'R', 'P']
-    complete_name = ['Wk', 'Wq', 'Wb', 'Wn', 'Wr', 'Wp', 'Bk', 'Bq', 'Bb', 'Bn', 'Br', 'Bp']
-    if string in piece_name:
-        pass
+        
+    @legal_moves_list.setter
+    def legal_moves_list(self, value):
+        self._legal_moves_list = value
+        self.legal_moves_rect = []
+        for move in self._legal_moves_list:
+            move_pos = converters.list_to_pixel(converters.pos_to_list(str(move)[-2:]), self.sqr_size, self.size)
+            self.legal_moves_rect.append(
+                pygame.Rect(
+                    move_pos[0], 
+                    move_pos[1], 
+                    self.sqr_size, 
+                    self.sqr_size
+                )
+            )
