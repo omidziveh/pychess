@@ -105,15 +105,21 @@ class Board:
     
     def onTap_pieces(self, pos):
         for piece in self.piece_list:
-            if piece.onTap(pos):
+            if not piece.onTap(pos):
+                self.legal_moves_list.clear()
+            else:
                 self.legal_moves_list = piece.legal_moves(list(self.board.legal_moves))
+                return
+                # print(piece.size.rect)
+                # if len(self.legal_moves_list) != len(self.legal_moves_rect):
+                #     print('=!')
                 
     def draw_legal_moves(self):
         for move in self.legal_moves_list:
             move_pos = converters.list_to_pixel(converters.pos_to_list(str(move)[-2:]), self.sqr_size, self.size)
             pygame.draw.circle(
                 self.screen, 
-                colors.green, 
+                colors.blue_light,
                 (move_pos[0] + self.sqr_size // 2, move_pos[1] + self.sqr_size // 2), 
                 self.sqr_size // 2 - 5
             )
@@ -122,7 +128,9 @@ class Board:
         for i in range(len(self.legal_moves_rect)):
             if self.legal_moves_rect[i].collidepoint(pos):
                 self.board.push_san(str(self.legal_moves_list[i]))
-        
+                self.legal_moves_list = []
+                self.legal_moves_rect = []
+                return 
 
 
     @property
