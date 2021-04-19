@@ -12,3 +12,9 @@ def pixel_to_list(pixel, sqr_size, table_size):
 
 def pixel_to_pos(pixel, sqr_size, table_size):
     return list_to_pos(pixel_to_list(pixel, sqr_size, table_size))
+
+def list_to_pixel(lst, sqr_size, table_size):
+    return [
+        (lst[0]) * sqr_size + table_size.left,
+        table_size.bottom - (lst[1]+1) * sqr_size
+    ]

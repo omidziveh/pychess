@@ -2,6 +2,7 @@ import chess
 import pygame
 import os
 
+from data import converters
 from data import colors
 from widgets import image
 from widgets import size
@@ -121,7 +122,14 @@ class Board:
                 self.legal_moves_list = piece.legal_moves(list(self.board.legal_moves))
                 
     def draw_legal_moves(self):
-        print(self.legal_moves_list)
+        for move in self.legal_moves_list:
+            move_pos = converters.list_to_pixel(converters.pos_to_list(str(move)[-2:]), self.sqr_size, self.size)
+            pygame.draw.circle(
+                self.screen, 
+                colors.green, 
+                (move_pos[0] + self.sqr_size // 2, move_pos[1] + self.sqr_size // 2), 
+                self.sqr_size // 2 - 5
+            )
         
 
 
