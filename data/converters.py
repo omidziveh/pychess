@@ -1,5 +1,8 @@
 def pos_to_list(pos):
-    return [ord(pos[0]) - 97, int(pos[1]) - 1]
+    try:
+        return [ord(pos[0]) - 97, int(pos[1]) - 1]
+    except:
+        return pos
     
 def list_to_pos(lst):
     return f'{chr(lst[0]+97)}{lst[1]+1}'

@@ -47,7 +47,7 @@ class DataTable:
             width=30,
             height=23
         )
-        menu_button = image.Image(self.screen, 'assets/menu.png', menu_button_size)
+        menu_button = image.Image(self.screen, 'assets/icons/menu.png', menu_button_size)
         return menu_button
         
     def menu_button_tapped(self, event):

@@ -1,7 +1,5 @@
 import pygame
-from pygame.locals import *
 import sys
-import os
 
 from pages import second_page
 from data import colors
@@ -10,31 +8,21 @@ from widgets import size
 from widgets import image
 
 
-_image_library = {}
-def get_image(path):
-        global _image_library
-        image = _image_library.get(path)
-        if image == None:
-                canonicalized_path = path.replace('/', os.sep).replace('\\', os.sep)
-                print(canonicalized_path)
-                image = pygame.image.load(canonicalized_path)
-                _image_library[path] = image
-        return image
-
 def page(screen):
 
+    # ----- "Start" button -----
     start_button_size = size.Size(600, 500, width=100, height=50)
     start_button = button.Button(screen, start_button_size, "play", border=13)
 
+    # ----- Logo -----
     logo_size = size.Size(600, 250, 550, 550)
-    logo = image.Image(screen, 'assets\logo.png', logo_size)
-    # image = pygame.image.load(os.path.join('pages', 'logo.png'))
-    # print(os.path.join('pages', 'logo.png'))
-    # image = pygame.transform.scale(image, (400, 400))
+    logo = image.Image(screen, 'assets\icons\logo.png', logo_size)
 
+    # ----- Main loop -----
     while True:
         screen.fill(colors.white)
 
+        # ---- Events ----
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -42,9 +30,9 @@ def page(screen):
             if start_button.onTap(event):
                 second_page.page(screen)
 
-        start_button.draw()
-        logo.draw()
-        # screen.blit(image, (0, 0))
-        # screen.blit(image, (0, 0))
+        start_button.draw() # draw "start" button.
+        logo.draw() # draw the app logo image.
 
+        # ---- Updates ----
         pygame.display.update()
+        pygame.time.Clock().tick(60)

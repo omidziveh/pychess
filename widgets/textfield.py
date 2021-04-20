@@ -4,13 +4,16 @@ from data import colors
 
 
 class TextField:
-    def __init__(self, screen, rect_size, controller, font=""):
+    def __init__(self, screen, rect_size, controller, font="", default_text=""):
         self.screen = screen
         self.size = rect_size
         self.controller = controller
         self.font = font
+        self.default_text = default_text
         self._rect = pygame.Rect(self.size.x, self.size.y, self.size.width, self.size.height)
         self.__color = colors.gray_dark
+        
+        self.controller.text = default_text
 
     def draw(self):
         pygame.draw.rect(

@@ -1,16 +1,15 @@
-import chess
 import pygame
-import os
+import chess
+import time
 
 from data import converters
 from data import colors
-from widgets import image
 from widgets import size
 from widgets import piece
 
 
 class Board:
-    def __init__(self, screen, table_size, side, sqr_size, board, 
+    def __init__(self, screen, table_size, side, sqr_size, board=chess.Board(), 
                  padding=100, theme=(colors.brown_dark, colors.brown_light), width=2):
         self.screen = screen  # pygame.display
         self.size = table_size  # Size
@@ -21,6 +20,7 @@ class Board:
         self.padding = padding  # Integer
         self.width = width  # Integer
         self._rect = pygame.Rect(self.size.x, self.size.y, self.size.width, self.size.height)
+        
         self._pieces = {}
         self.piece_list = []
         self._legal_moves_list = []
@@ -110,13 +110,10 @@ class Board:
             else:
                 self.legal_moves_list = piece.legal_moves(list(self.board.legal_moves))
                 return
-                # print(piece.size.rect)
-                # if len(self.legal_moves_list) != len(self.legal_moves_rect):
-                #     print('=!')
                 
     def draw_legal_moves(self):
         for move in self.legal_moves_list:
-            move_pos = converters.list_to_pixel(converters.pos_to_list(str(move)[-2:]), self.sqr_size, self.size)
+            move_pos = converters.list_to_pixel(converters.pos_to_list(str(move)[2:4]), self.sqr_size, self.size)
             pygame.draw.circle(
                 self.screen, 
                 colors.blue_light,
@@ -129,7 +126,9 @@ class Board:
             if self.legal_moves_rect[i].collidepoint(pos):
                 self.board.push_san(str(self.legal_moves_list[i]))
                 self.legal_moves_list = []
-                self.legal_moves_rect = []
+                self.legal_moves_rect = []                
+                time.sleep(0.1)
+                self.board.mirror()
                 return 
 
 
@@ -158,7 +157,8 @@ class Board:
         self._legal_moves_list = value
         self.legal_moves_rect = []
         for move in self._legal_moves_list:
-            move_pos = converters.list_to_pixel(converters.pos_to_list(str(move)[-2:]), self.sqr_size, self.size)
+            print(str(move))
+            move_pos = converters.list_to_pixel(converters.pos_to_list(str(move)[2:4]), self.sqr_size, self.size)
             self.legal_moves_rect.append(
                 pygame.Rect(
                     move_pos[0], 

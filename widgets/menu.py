@@ -73,7 +73,7 @@ class Menu:
         
     def init_close_button(self):
         close_button_size = size.Size(720, 190, width=40, height=40)
-        close_button = image.Image(self.screen, 'assets/close.png', close_button_size)
+        close_button = image.Image(self.screen, 'assets/icons/close.png', close_button_size)
         return close_button
         
     def draw_close_button(self):

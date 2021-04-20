@@ -3,6 +3,8 @@ import pygame
 from data import colors
 from widgets import text
 
+pygame.init()
+
 
 class Button:
     def __init__(self, screen, button_size, string,
