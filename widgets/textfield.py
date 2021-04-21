@@ -1,7 +1,9 @@
 import pygame
 
+from pygame import mixer
 from data import colors
 
+mixer.init()
 
 class TextField:
     def __init__(self, screen, rect_size, controller, font="", default_text=""):

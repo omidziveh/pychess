@@ -6,11 +6,13 @@ from data import converters
 from data import colors
 from widgets import size
 from widgets import piece
+from pygame import mixer
 
+mixer.init()
 
 class Board:
     def __init__(self, screen, table_size, side, sqr_size, board=chess.Board(), 
-                 padding=100, theme=(colors.brown_dark, colors.brown_light), width=2):
+                 padding=100, theme=((211, 211, 201), (132, 117, 119)), width=2):
         self.screen = screen  # pygame.display
         self.size = table_size  # Size
         self.side = side  # "colors.white" / "colors.black"
@@ -19,26 +21,47 @@ class Board:
         self.theme = theme  # (color dark, color light)
         self.padding = padding  # Integer
         self.width = width  # Integer
-        self._rect = pygame.Rect(self.size.x, self.size.y, self.size.width, self.size.height)
+        self._rect = pygame.Rect(self.size.x - 22, self.size.y - 22, self.size.width + 40, self.size.height + 40)
         
         self._pieces = {}
         self.piece_list = []
         self._legal_moves_list = []
         self.legal_moves_rect = []
+        
     
     def draw(self):
         pygame.draw.rect(
             self.screen,
-            self.theme[1],
-            self.rect
+            colors.white,
+            self.rect,
+            border_radius=4
         )
+        
+        for i in range(self.size.left + self.sqr_size, self.size.right, self.sqr_size * 2):
+            for j in range(self.size.top, self.size.bottom, self.sqr_size * 2):
+                pygame.draw.rect(
+                    self.screen,
+                    self.theme[1],
+                    (i, j, self.sqr_size - 3, self.sqr_size - 3), 
+                    border_radius=4
+                )
 
+        for i in range(self.size.left, self.size.right, self.sqr_size * 2):
+            for j in range(self.size.top + self.sqr_size, self.size.bottom, self.sqr_size * 2):
+                pygame.draw.rect(
+                    self.screen,
+                    self.theme[1],
+                    (i, j, self.sqr_size - 3, self.sqr_size - 3), 
+                    border_radius=4
+                )
+        
         for i in range(self.size.left, self.size.right, self.sqr_size * 2):
             for j in range(self.size.top, self.size.bottom, self.sqr_size * 2):
                 pygame.draw.rect(
                     self.screen,
                     self.theme[0],
-                    (i, j, self.sqr_size, self.sqr_size)
+                    (i, j, self.sqr_size - 3, self.sqr_size - 3), 
+                    border_radius=4
                 )
 
         for i in range(self.size.left + self.sqr_size, self.size.right, self.sqr_size * 2):
@@ -46,7 +69,8 @@ class Board:
                 pygame.draw.rect(
                     self.screen,
                     self.theme[0],
-                    (i, j, self.sqr_size, self.sqr_size)
+                    (i, j, self.sqr_size - 3, self.sqr_size - 3), 
+                    border_radius=4
                 )
 
     def dict_to_list(self, dict):
@@ -59,10 +83,10 @@ class Board:
                         self.screen,
                         'assets/pieces/'+key+'.png',
                         size.Size(
-                            value[0] * self.sqr_size + self.size.left + self.sqr_size // 2, 
-                            value[1] * self.sqr_size + self.size.top + self.sqr_size // 2, 
-                            self.sqr_size, 
-                            self.sqr_size
+                            value[0] * self.sqr_size + self.size.left + self.sqr_size // 2 - 2, 
+                            value[1] * self.sqr_size + self.size.top + self.sqr_size // 2 - 2, 
+                            self.sqr_size - 4, 
+                            self.sqr_size - 4
                         ), 
                         self.sqr_size, 
                         self.size
@@ -71,18 +95,18 @@ class Board:
    
     def generate_fen(self):
         pieces = {
-            'Wr': [], 
-            'Wn': [], 
-            'Wb': [], 
-            'Wq': [],
-            'Wk': [], 
-            'Wp': [], 
-            'BR': [], 
-            'BN': [], 
-            'BB': [], 
-            'BQ': [], 
-            'BK': [], 
-            'BP': []
+            'WR': [], 
+            'WN': [], 
+            'WB': [], 
+            'WQ': [],
+            'WK': [], 
+            'WP': [], 
+            'Br': [], 
+            'Bn': [], 
+            'Bb': [], 
+            'Bq': [], 
+            'Bk': [], 
+            'Bp': []
         }
         fen = self.board.fen().split()[0].split('/')
         for i in range(len(fen)):
@@ -91,10 +115,10 @@ class Board:
             for j in range(len(fen[i])):
                 if fen[i][j].isdigit():
                     number += int(fen[i][j])
-                if fen[i][j] in ['r', 'n', 'b', 'q', 'k', 'p']:
+                if fen[i][j] in ['R', 'N', 'B', 'Q', 'K', 'P']:
                     pieces['W'+fen[i][j]].append([pos+number, i])
                     pos += 1
-                if fen[i][j] in ['R', 'N', 'B', 'Q', 'K', 'P']:
+                if fen[i][j] in ['r', 'n', 'b', 'q', 'k', 'p']:
                     pieces['B'+fen[i][j]].append([pos+number, i])
                     pos += 1
         return pieces
@@ -116,18 +140,33 @@ class Board:
             move_pos = converters.list_to_pixel(converters.pos_to_list(str(move)[2:4]), self.sqr_size, self.size)
             pygame.draw.circle(
                 self.screen, 
-                colors.blue_light,
+                colors.blue_dark,
                 (move_pos[0] + self.sqr_size // 2, move_pos[1] + self.sqr_size // 2), 
-                self.sqr_size // 2 - 5
+                self.sqr_size // 5
             )
     
-    def tap_move(self, pos):
+    def tap_move(self, pos, turn):
         for i in range(len(self.legal_moves_rect)):
             if self.legal_moves_rect[i].collidepoint(pos):
                 self.board.push_san(str(self.legal_moves_list[i]))
                 self.legal_moves_list = []
-                self.legal_moves_rect = []                
-                time.sleep(0.1)
+                self.legal_moves_rect = []
+                
+                move = mixer.Sound('assets/sounds/move.mp3')
+                mixer.Sound.set_volume(move, 1)
+                mixer.Sound.play(move)
+                
+                turn.switch_turn()
+                
+                
+                # self.board.apply_transform(chess.flip_vertical)
+                self.legal_moves_list.clear()
+                self.legal_moves_rect.clear()
+                print(self.board.fen())
+                print(self.board.legal_moves)
+                
+                
+                time.sleep(0.2)
                 self.board.mirror()
                 return 
 
@@ -157,7 +196,6 @@ class Board:
         self._legal_moves_list = value
         self.legal_moves_rect = []
         for move in self._legal_moves_list:
-            print(str(move))
             move_pos = converters.list_to_pixel(converters.pos_to_list(str(move)[2:4]), self.sqr_size, self.size)
             self.legal_moves_rect.append(
                 pygame.Rect(

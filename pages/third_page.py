@@ -10,6 +10,7 @@ from widgets import text
 from widgets import size
 from pages import second_page
 from pages import forth_page
+from pages import loading
 
 pygame.init()
 
@@ -45,11 +46,13 @@ def page(screen, users={1: 'player1', 2: 'player2'}):
             if next_button.onTap(event): # NEXT
                 player2_name = player2_name_texteditingcontroller.text
                 users[2] = player2_name
+                loading.page(screen)
                 forth_page.page(screen, users)
 
             player2_name_textfield.typing(event)
 
             if back_button.onTap(event): # BACK
+                users[2] = player2_name_texteditingcontroller.text
                 second_page.page(screen, users)
 
             next_button.onHover(event) # NEXT(hover)

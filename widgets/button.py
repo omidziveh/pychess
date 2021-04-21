@@ -1,9 +1,12 @@
+from chess import Move
 import pygame
 
 from data import colors
 from widgets import text
+from pygame import mixer
 
-pygame.init()
+# pygame.init()
+mixer.init()
 
 
 class Button:
@@ -46,6 +49,11 @@ class Button:
         if event.type == pygame.MOUSEBUTTONUP:
             self.size.rect = pygame.Rect(self.size.x, self.size.y, self.size.width, self.size.height)
             if self.size.rect.collidepoint(event.pos):
+                
+                move = mixer.Sound('assets/sounds/click.mp3')
+                mixer.Sound.set_volume(move, 1)
+                mixer.Sound.play(move)
+                
                 return True
 
     # check is the button hovered or not

@@ -16,7 +16,7 @@ class Piece:
     
     def draw(self):
         self.image.draw()
-    
+
     def onTap(self, pos):
         return True if self.size.rect.collidepoint(pos) else False
     

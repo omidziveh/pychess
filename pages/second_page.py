@@ -16,7 +16,7 @@ from pages import third_page
 pygame.init()
 
 
-def page(screen, users={1: 'player1'}):
+def page(screen, users={1: 'player1', 2:'player2'}):
 
     # ----- TextField -----
     player1_name_text = text.Text(
@@ -49,7 +49,7 @@ def page(screen, users={1: 'player1'}):
 
             if next_button.onTap(event): # NEXT
                 player1_name = player1_name_texteditingcontroller.text
-                users = {1: player1_name, 2: 'player2'}
+                users[1] = player1_name
                 third_page.page(screen, users) # NAVIGATOR
 
             if back_button.onTap(event): # BACK

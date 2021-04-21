@@ -1,6 +1,8 @@
 import pygame
+from pygame import mixer
 
 pygame.init()
+mixer.init()
 
 
 class Image:
@@ -14,6 +16,7 @@ class Image:
         self.image = pygame.image.load(path)
 
         self.image = pygame.transform.scale(self.image, (size.width, size.height))
+        
 
     def draw(self):
         self.screen.blit(self.image, (self.size.x, self.size.y))
@@ -26,6 +29,9 @@ class Image:
             if event.type == pygame.MOUSEBUTTONUP:
                 self.size.y = self.y
                 if self.size.rect.collidepoint(event.pos):
+                    click = mixer.Sound('assets/sounds/click.mp3')
+                    mixer.Sound.set_volume(click, 1)
+                    mixer.Sound.play(click)
                     return True
         if event.type == pygame.MOUSEBUTTONUP:
             if self.size.rect.collidepoint(event.pos):
