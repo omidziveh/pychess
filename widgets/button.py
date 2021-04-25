@@ -91,7 +91,7 @@ class Button:
                                self.__string,
                                self.size.center[0],
                                self.size.center[1],
-                               self.size.height - 20)
+                               18)
         return self._text
 
     @foreground_color.setter

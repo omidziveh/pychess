@@ -21,3 +21,10 @@ def list_to_pixel(lst, sqr_size, table_size):
         (lst[0]) * sqr_size + table_size.left,
         table_size.bottom - (lst[1]+1) * sqr_size
     ]
+
+def number_to_pixel(number, sqr_size, table_size):
+    i, j = number // 8, number % 8
+    return [
+        table_size.left + i * sqr_size, 
+        table_size.top + j * sqr_size
+    ]

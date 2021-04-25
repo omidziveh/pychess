@@ -1,9 +1,9 @@
-from widgets.menu import Menu
 import pygame
 
 from data import colors
 from widgets import size
 from widgets import image
+from widgets import button
 from widgets import text
 
 pygame.init()
@@ -24,6 +24,7 @@ class DataTable:
             table_size.height - 60
         )
         self.menu_button = self.init_menu_button()
+        self.undo_button = self.init_undo_button()
 
     def draw(self):
         pygame.draw.rect(
@@ -39,19 +40,34 @@ class DataTable:
             border_radius=13
         )
         self.menu_button.draw()
+        self.undo_button.draw()
     
     def init_menu_button(self):
         menu_button_size = size.Size(
             self.inside_table_size.right - 20, 
-            (self.inside_table_size.top - 20), 
+            self.inside_table_size.top - 20, 
             width=30,
             height=23
         )
         menu_button = image.Image(self.screen, 'assets/icons/menu.png', menu_button_size)
         return menu_button
+
+    def init_undo_button(self):
+        undo_button_size = size.Size(
+            self.inside_table_size.left + 35, 
+            self.inside_table_size.top - 20, 
+            width=60, 
+            height=23
+        )
+        undo_button = button.Button(self.screen, undo_button_size, 'UNDO', background_color=self.colors['dark'])
+        return undo_button
         
     def menu_button_tapped(self, event):
         if self.menu_button.onTap(event):
+            return True
+        
+    def undo_button_tapped(self, event):
+        if self.undo_button.onTap(event):
             return True
         
     def draw_cell(self, cell):

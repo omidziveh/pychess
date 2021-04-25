@@ -20,9 +20,9 @@ def page(screen, users={1: 'player1', 2:'player2'}):
 
     # ----- TextField -----
     player1_name_text = text.Text(
-        screen, 'Player 1 name:', 400, 250, 40, fg_color=colors.gray_dark)
+        screen, 'Player 1 name:', 460, 250, 18, fg_color=colors.gray_dark)
     player1_name_texteditingcontroller = texteditingcontroller.TextEditingController()
-    player1_name_size = size.Size(700, 250, 350, 60)
+    player1_name_size = size.Size(710, 250, 250, 50)
     player1_name_textfield = textfield.TextField(screen, player1_name_size,
                                                  player1_name_texteditingcontroller,
                                                  default_text=users[1]

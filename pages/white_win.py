@@ -1,20 +1,17 @@
 import pygame
 import sys
 
-from data import colors
-from widgets import image
-from widgets import text
-from widgets import size
-from widgets import button
 from pages import second_page
-
-
-pygame.init()
+from widgets import image
+from widgets import button
+from widgets import size
+from widgets import text
+from data import colors
 
 def page(screen, users):
     x, y = screen.get_size()
     
-    winner_name = users[2].upper()
+    winner_name = users[1].upper()
     winner_text = text.Text(
         screen, 
         f'{winner_name} WINS!', 
@@ -34,12 +31,11 @@ def page(screen, users):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-                
             if quit_button.onTap(event):
                 sys.exit()
             if rematch_button.onTap(event):
                 second_page.page(screen, users)
-                
+            
             quit_button.onHover(event)
             rematch_button.onHover(event)
             

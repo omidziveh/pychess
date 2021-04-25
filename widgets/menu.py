@@ -68,7 +68,7 @@ class Menu:
         return self.buttons[index].onTap(event)
     
     def init_name(self):
-        name_text = text.Text(self.screen, self.name, 525, 190, 45, fg_color=colors.gray_dark)
+        name_text = text.Text(self.screen, self.name, 525, 190, 20, fg_color=colors.gray_dark)
         return name_text
         
     def init_close_button(self):
@@ -80,10 +80,12 @@ class Menu:
         self.close_button.draw()
         
     def onTap_close_button(self, event):
-        return self.close_button.onTap(event)
+        if self.close_button.onTap(event) or self.tap_outside_menu(event):
+            return True
+        return False
 
     def tap_outside_menu(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONUP:
             if self.size.rect.collidepoint(event.pos):
                 return False
             return True

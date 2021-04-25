@@ -16,7 +16,7 @@ def page(screen):
 
     # ----- Logo -----
     logo_size = size.Size(600, 250, 550, 550)
-    logo = image.Image(screen, 'assets\icons\logo.png', logo_size)
+    logo = image.Image(screen, 'assets\pages\logo.png', logo_size)
 
     # ----- Main loop -----
     while True:

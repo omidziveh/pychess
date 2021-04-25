@@ -12,7 +12,7 @@ mixer.init()
 
 class Board:
     def __init__(self, screen, table_size, side, sqr_size, board=chess.Board(), 
-                 padding=100, theme=((211, 211, 201), (132, 117, 119)), width=2):
+                 padding=100, theme=(colors.brown_light, colors.brown_dark), width=2):
         self.screen = screen  # pygame.display
         self.size = table_size  # Size
         self.side = side  # "colors.white" / "colors.black"
@@ -21,7 +21,7 @@ class Board:
         self.theme = theme  # (color dark, color light)
         self.padding = padding  # Integer
         self.width = width  # Integer
-        self._rect = pygame.Rect(self.size.x - 22, self.size.y - 22, self.size.width + 40, self.size.height + 40)
+        self._rect = pygame.Rect(self.size.x - 22, self.size.y - 22, self.size.width - 40, self.size.height - 40)
         
         self._pieces = {}
         self.piece_list = []
@@ -30,12 +30,13 @@ class Board:
         
     
     def draw(self):
-        pygame.draw.rect(
-            self.screen,
-            colors.white,
-            self.rect,
-            border_radius=4
-        )
+        # pygame.draw.rect(
+        #     self.screen,
+        #     colors.blue_dark,
+        #     self.rect,
+        #     width=10,
+        #     border_radius=4
+        # )
         
         for i in range(self.size.left + self.sqr_size, self.size.right, self.sqr_size * 2):
             for j in range(self.size.top, self.size.bottom, self.sqr_size * 2):
@@ -145,7 +146,7 @@ class Board:
                 self.sqr_size // 5
             )
     
-    def tap_move(self, pos, turn):
+    def tap_move(self, pos):
         for i in range(len(self.legal_moves_rect)):
             if self.legal_moves_rect[i].collidepoint(pos):
                 self.board.push_san(str(self.legal_moves_list[i]))
@@ -155,20 +156,17 @@ class Board:
                 move = mixer.Sound('assets/sounds/move.mp3')
                 mixer.Sound.set_volume(move, 1)
                 mixer.Sound.play(move)
-                
-                turn.switch_turn()
-                
-                
-                # self.board.apply_transform(chess.flip_vertical)
+
                 self.legal_moves_list.clear()
                 self.legal_moves_rect.clear()
-                print(self.board.fen())
-                print(self.board.legal_moves)
-                
-                
+                                
                 time.sleep(0.2)
-                self.board.mirror()
                 return 
+            
+    def draw_cehck(self):
+        if self.board.is_check():
+            if self.board.turn:
+                print()
 
 
     @property

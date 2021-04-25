@@ -8,7 +8,7 @@ pygame.init()
 
 def page(screen):
     loading_image_size = size.Size(600, 300, 1210, 605)
-    loading_image = image.Image(screen, 'assets/icons/loading.png', loading_image_size)
+    loading_image = image.Image(screen, 'assets/pages/loading.png', loading_image_size)
     
     loading_image.draw()
     pygame.display.update()
