@@ -1,5 +1,4 @@
 import pygame
-import json
 import sys
 
 from data import colors
