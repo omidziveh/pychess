@@ -25,6 +25,7 @@ def page(screen):
         # ---- Events ----
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                pygame.quit()
                 sys.exit()
             start_button.onHover(event)
             if start_button.onTap(event):

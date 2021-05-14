@@ -30,8 +30,10 @@ def page(screen, users):
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                pygame.quit()
                 sys.exit()
             if quit_button.onTap(event):
+                pygame.quit()
                 sys.exit()
             if rematch_button.onTap(event):
                 second_page.page(screen, users)

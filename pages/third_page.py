@@ -41,6 +41,7 @@ def page(screen, users={1: 'player1', 2: 'player2'}):
         # ---- Events ----
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                pygame.quit()
                 sys.exit()
 
             if next_button.onTap(event): # NEXT

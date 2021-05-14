@@ -72,6 +72,7 @@ def page(screen, users):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                pygame.quit()
                 sys.exit()
 
             if my_menu.enabled:  # if the menu is enabled
@@ -79,6 +80,7 @@ def page(screen, users):
                     my_menu.enabled = False
 
                 if my_menu.onTap_button(event, 0):  # QUIT button
+                    pygame.quit()
                     sys.exit()
 
                 if my_menu.onTap_button(event, 1):  # REAMTCH button
